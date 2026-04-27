@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mariana — Pesquisa de Tendências & Conteúdo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5F1EA;
+    --bone: #EDE8DF;
+    --sand: #B8A080;
+    --charcoal: #1C1917;
+    --mid: #6B6560;
+    --soft: #9B9590;
+    --white: #FDFBF8;
+    --accent: #8C7255;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--charcoal);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* --- NAV --- */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.4rem 4rem;
+    background: rgba(245, 241, 234, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 0.5px solid rgba(28,25,23,0.1);
+    transition: all 0.3s ease;
+  }
+
+  .nav-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--charcoal);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mid);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--charcoal); }
+
+  /* --- HERO --- */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    padding: 0 4rem 5rem;
+    padding-top: 8rem;
+    gap: 4rem;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 42%;
+    height: 100%;
+    background: var(--bone);
+    z-index: 0;
+  }
+
+  .hero-left {
+    position: relative;
+    z-index: 1;
+    padding-bottom: 2rem;
+  }
+
+  .hero-tag {
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sand);
+    margin-bottom: 2rem;
+    display: block;
+  }
+
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(4rem, 7vw, 7rem);
+    font-weight: 300;
+    line-height: 0.92;
+    color: var(--charcoal);
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-bio {
+    font-size: 0.95rem;
+    line-height: 1.85;
+    color: var(--mid);
+    max-width: 440px;
+    border-left: 1px solid var(--sand);
+    padding-left: 1.5rem;
+  }
+
+  .hero-right {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 2rem;
+    padding-left: 3rem;
+  }
+
+  .hero-photo-frame {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: var(--sand);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+
+  .hero-photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-photo-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: linear-gradient(160deg, #C4AA8A 0%, #9B8266 100%);
+    color: rgba(255,255,255,0.6);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 2.5rem;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--charcoal);
+  }
+
+  .stat-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--soft);
+  }
+
+  /* --- SECTIONS --- */
+  section { padding: 7rem 4rem; }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 2rem;
+    margin-bottom: 4rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 0.5px solid rgba(28,25,23,0.15);
+  }
+
+  .section-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--soft);
+    font-style: italic;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  .section-desc {
+    margin-left: auto;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--soft);
+    max-width: 220px;
+    text-align: right;
+    line-height: 1.6;
+  }
+
+  /* --- TENDÊNCIAS --- */
+  #tendencias { background: var(--white); }
+
+  .reports-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .report-card {
+    background: var(--cream);
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: transform 0.35s ease;
+  }
+
+  .report-card:hover { transform: translateY(-4px); }
+
+  .report-cover {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: var(--bone);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .report-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+
+  .report-card:hover .report-cover img { transform: scale(1.04); }
+
+  .report-cover-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--soft);
+    letter-spacing: 0.05em;
+  }
+
+  .report-info {
+    padding: 1.2rem 0 0.5rem;
+  }
+
+  .report-season {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sand);
+    margin-bottom: 0.4rem;
+  }
+
+  .report-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--charcoal);
+    margin-bottom: 0.3rem;
+  }
+
+  .report-type {
+    font-size: 0.75rem;
+    color: var(--soft);
+  }
+
+  .confidential-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(28,25,23,0.75);
+    color: rgba(255,255,255,0.8);
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.6rem;
+  }
+
+  /* --- BLOG --- */
+  #blog { background: var(--cream); }
+
+  .blog-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .blog-card {
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .blog-card:hover { transform: translateY(-3px); }
+
+  .blog-card.featured { grid-row: span 2; }
+
+  .blog-thumb {
+    width: 100%;
+    background: var(--bone);
+    overflow: hidden;
+  }
+
+  .blog-card.featured .blog-thumb { aspect-ratio: 4/5; }
+  .blog-card:not(.featured) .blog-thumb { aspect-ratio: 16/9; }
+
+  .blog-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+
+  .blog-card:hover .blog-thumb img { transform: scale(1.04); }
+
+  .blog-thumb-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--soft);
+  }
+
+  .blog-content {
+    padding: 1.3rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .blog-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .blog-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sand);
+  }
+
+  .blog-date {
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    color: var(--soft);
+  }
+
+  .blog-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.3;
+    color: var(--charcoal);
+    margin-bottom: 0.6rem;
+  }
+
+  .blog-card.featured .blog-title { font-size: 1.6rem; }
+
+  .blog-excerpt {
+    font-size: 0.82rem;
+    color: var(--mid);
+    line-height: 1.7;
+    flex: 1;
+  }
+
+  .blog-link {
+    margin-top: 1rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* --- SOCIAL --- */
+  #social { background: var(--charcoal); color: var(--cream); }
+
+  #social .section-title { color: var(--cream); }
+  #social .section-number { color: var(--soft); }
+  #social .section-desc { color: var(--soft); }
+  #social .section-header { border-color: rgba(245,241,234,0.1); }
+
+  .social-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .social-card {
+    background: rgba(245,241,234,0.05);
+    border: 0.5px solid rgba(245,241,234,0.1);
+    padding: 2rem;
+    transition: background 0.3s;
+  }
+
+  .social-card:hover { background: rgba(245,241,234,0.09); }
+
+  .social-platform {
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sand);
+    margin-bottom: 1rem;
+  }
+
+  .social-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 0.7rem;
+    line-height: 1.3;
+  }
+
+  .social-desc {
+    font-size: 0.82rem;
+    color: var(--soft);
+    line-height: 1.7;
+  }
+
+  /* --- VIDEOS --- */
+  #videos { background: var(--bone); }
+
+  .videos-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    margin-bottom: 4rem;
+    align-items: start;
+  }
+
+  .videos-text-pt { }
+  .videos-text-en { border-left: 1px solid var(--sand); padding-left: 2rem; }
+
+  .lang-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--sand);
+    display: block;
+    margin-bottom: 0.8rem;
+  }
+
+  .videos-paragraph {
+    font-size: 0.92rem;
+    color: var(--mid);
+    line-height: 1.85;
+  }
+
+  .videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .video-card {
+    background: var(--white);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .video-card:hover { transform: translateY(-3px); }
+
+  .video-thumb {
+    width: 100%;
+    aspect-ratio: 9/16;
+    background: var(--cream);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .video-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .video-thumb-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--soft);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+  }
+
+  .play-icon {
+    width: 44px; height: 44px;
+    border: 1.5px solid var(--soft);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .play-icon::after {
+    content: '';
+    border-left: 14px solid var(--soft);
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    margin-left: 3px;
+  }
+
+  .video-info { padding: 1rem; }
+
+  .video-brand {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sand);
+    margin-bottom: 0.3rem;
+  }
+
+  .video-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--charcoal);
+    margin-bottom: 0.3rem;
+  }
+
+  .video-lang {
+    font-size: 0.68rem;
+    color: var(--soft);
+  }
+
+  /* --- FORMAÇÃO --- */
+  #formacao { background: var(--white); }
+
+  .formacao-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .formacao-card {
+    border: 0.5px solid rgba(28,25,23,0.12);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: border-color 0.3s;
+  }
+
+  .formacao-card:hover { border-color: var(--sand); }
+
+  .formacao-type {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sand);
+  }
+
+  .formacao-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--charcoal);
+    line-height: 1.25;
+  }
+
+  .formacao-institution {
+    font-size: 0.8rem;
+    color: var(--mid);
+  }
+
+  .formacao-desc {
+    font-size: 0.85rem;
+    color: var(--mid);
+    line-height: 1.75;
+    border-top: 0.5px solid rgba(28,25,23,0.08);
+    padding-top: 1rem;
+  }
+
+  /* --- CONTATO --- */
+  #contato {
+    background: var(--charcoal);
+    color: var(--cream);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 8rem 4rem;
+  }
+
+  .contato-pre {
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--soft);
+    margin-bottom: 1.5rem;
+  }
+
+  .contato-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--cream);
+    margin-bottom: 2.5rem;
+    line-height: 1;
+  }
+
+  .contato-links {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 5rem;
+  }
+
+  .contato-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .contato-link:hover { opacity: 0.7; }
+
+  .contato-link-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--soft);
+  }
+
+  .contato-link-value {
+    font-size: 0.95rem;
+    color: var(--cream);
+  }
+
+  .footer-line {
+    border-top: 0.5px solid rgba(245,241,234,0.1);
+    width: 100%;
+    padding-top: 2rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: rgba(245,241,234,0.3);
+    text-align: center;
+  }
+
+  /* --- SCROLL ANIMATIONS --- */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 1.5rem; }
+    .hero { grid-template-columns: 1fr; padding: 8rem 1.5rem 4rem; }
+    .hero::before { display: none; }
+    .hero-right { padding-left: 0; }
+    .hero-photo-frame { max-width: 320px; }
+    .blog-grid { grid-template-columns: 1fr; }
+    .blog-card.featured { grid-row: auto; }
+    .social-grid { grid-template-columns: 1fr; }
+    .videos-intro { grid-template-columns: 1fr; gap: 2rem; }
+    .videos-text-en { border-left: none; padding-left: 0; border-top: 1px solid var(--sand); padding-top: 1.5rem; }
+    .formacao-grid { grid-template-columns: 1fr; }
+    .section-header { flex-wrap: wrap; }
+    .section-desc { margin-left: 0; text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVEGAÇÃO -->
+<nav>
+  <a href="#" class="nav-name">Mariana</a>
+  <ul class="nav-links">
+    <li><a href="#tendencias">Tendências</a></li>
+    <li><a href="#blog">Blog</a></li>
+    <li><a href="#social">Social</a></li>
+    <li><a href="#videos">Vídeos</a></li>
+    <li><a href="#formacao">Formação</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-left">
+    <span class="hero-tag">Pesquisa de Tendências · Conteúdo Editorial</span>
+    <h1 class="hero-name">
+      Mari<em>ana</em><br>
+      <!-- SUBSTITUA pelo seu sobrenome -->
+      Sobrenome
+    </h1>
+    <p class="hero-bio">
+      <!-- SUBSTITUA pela sua bio — 3 a 5 frases: quem é, o que faz, onde está. -->
+      Pesquisadora de tendências especializada em calçados e acessórios. Produz reports editoriais e conteúdo analítico que traduzem comportamentos de passarela em narrativas de mercado. Baseada no Brasil, formanda em design de moda.
+    </p>
+  </div>
+  <div class="hero-right">
+    <div class="hero-photo-frame">
+      <!-- SUBSTITUA o src abaixo por sua foto. Deixe o placeholder enquanto não tiver. -->
+      <!-- <img src="sua-foto.jpg" alt="Mariana"> -->
+      <div class="hero-photo-placeholder">
+        <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:rgba(255,255,255,0.5)">sua foto aqui</span>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-number"><!-- ex: 12 -->—</span>
+        <span class="stat-label">Reports publicados</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number"><!-- ex: 3 -->—</span>
+        <span class="stat-label">Anos de pesquisa</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number"><!-- ex: 20+ -->—</span>
+        <span class="stat-label">Artigos editoriais</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PESQUISA DE TENDÊNCIAS -->
+<section id="tendencias">
+  <div class="section-header fade-up">
+    <span class="section-number">01</span>
+    <h2 class="section-title">Pesquisa de Tendências</h2>
+    <span class="section-desc">Conteúdo confidencial — exibição de capas</span>
+  </div>
+
+  <div class="reports-grid">
+    <!-- CARTÃO DE REPORT — duplique esse bloco para cada report -->
+    <!-- Report 1 -->
+    <div class="report-card fade-up">
+      <div class="report-cover">
+        <!-- <img src="capa-report-1.jpg" alt="Report FW26/27 Calçados"> -->
+        <div class="report-cover-placeholder">capa do report</div>
+        <span class="confidential-badge">Confidencial</span>
+      </div>
+      <div class="report-info">
+        <div class="report-season">FW 26/27</div>
+        <div class="report-title"><!-- Nome do report --></div>
+        <div class="report-type">Report de tendências · Calçados</div>
+      </div>
+    </div>
+
+    <!-- Report 2 -->
+    <div class="report-card fade-up">
+      <div class="report-cover">
+        <div class="report-cover-placeholder">capa do report</div>
+        <span class="confidential-badge">Confidencial</span>
+      </div>
+      <div class="report-info">
+        <div class="report-season">FW 26/27</div>
+        <div class="report-title"><!-- Nome do report --></div>
+        <div class="report-type">Report de tendências · Bolsas</div>
+      </div>
+    </div>
+
+    <!-- Report 3 -->
+    <div class="report-card fade-up">
+      <div class="report-cover">
+        <div class="report-cover-placeholder">capa do report</div>
+        <span class="confidential-badge">Confidencial</span>
+      </div>
+      <div class="report-info">
+        <div class="report-season">SS 25</div>
+        <div class="report-title"><!-- Nome do report --></div>
+        <div class="report-type">Report de tendências · Cores</div>
+      </div>
+    </div>
+
+    <!-- Report 4 -->
+    <div class="report-card fade-up">
+      <div class="report-cover">
+        <div class="report-cover-placeholder">capa do report</div>
+        <span class="confidential-badge">Confidencial</span>
+      </div>
+      <div class="report-info">
+        <div class="report-season">SS 25</div>
+        <div class="report-title"><!-- Nome do report --></div>
+        <div class="report-type">Report de tendências · Acessórios</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDITORIAL & BLOG -->
+<section id="blog">
+  <div class="section-header fade-up">
+    <span class="section-number">02</span>
+    <h2 class="section-title">Editorial & Blog</h2>
+    <span class="section-desc">Artigos publicados em fashiondirections.com</span>
+  </div>
+
+  <div class="blog-grid">
+    <!-- POST DESTAQUE -->
+    <a class="blog-card featured fade-up" href="<!-- URL DO POST -->" target="_blank">
+      <div class="blog-thumb">
+        <!-- <img src="thumb-post-1.jpg" alt="FW26/27 Womenswear"> -->
+        <div class="blog-thumb-placeholder">imagem do post</div>
+      </div>
+      <div class="blog-content">
+        <div class="blog-meta">
+          <span class="blog-tag">Editorial</span>
+          <span class="blog-date"><!-- ex: Março 2025 --></span>
+        </div>
+        <h3 class="blog-title"><!-- Título do post destaque --></h3>
+        <p class="blog-excerpt"><!-- Trecho de abertura ou subtítulo do post --></p>
+        <span class="blog-link">Ler artigo →</span>
+      </div>
+    </a>
+
+    <!-- POST 2 -->
+    <a class="blog-card fade-up" href="<!-- URL -->" target="_blank">
+      <div class="blog-thumb">
+        <div class="blog-thumb-placeholder">imagem</div>
+      </div>
+      <div class="blog-content">
+        <div class="blog-meta">
+          <span class="blog-tag">Tendências</span>
+          <span class="blog-date"><!-- data --></span>
+        </div>
+        <h3 class="blog-title"><!-- Título --></h3>
+        <span class="blog-link">Ler artigo →</span>
+      </div>
+    </a>
+
+    <!-- POST 3 -->
+    <a class="blog-card fade-up" href="<!-- URL -->" target="_blank">
+      <div class="blog-thumb">
+        <div class="blog-thumb-placeholder">imagem</div>
+      </div>
+      <div class="blog-content">
+        <div class="blog-meta">
+          <span class="blog-tag">Acessórios</span>
+          <span class="blog-date"><!-- data --></span>
+        </div>
+        <h3 class="blog-title"><!-- Título --></h3>
+        <span class="blog-link">Ler artigo →</span>
+      </div>
+    </a>
+
+    <!-- POST 4 -->
+    <a class="blog-card fade-up" href="<!-- URL -->" target="_blank">
+      <div class="blog-thumb">
+        <div class="blog-thumb-placeholder">imagem</div>
+      </div>
+      <div class="blog-content">
+        <div class="blog-meta">
+          <span class="blog-tag">Calçados</span>
+          <span class="blog-date"><!-- data --></span>
+        </div>
+        <h3 class="blog-title"><!-- Título --></h3>
+        <span class="blog-link">Ler artigo →</span>
+      </div>
+    </a>
+
+    <!-- POST 5 -->
+    <a class="blog-card fade-up" href="<!-- URL -->" target="_blank">
+      <div class="blog-thumb">
+        <div class="blog-thumb-placeholder">imagem</div>
+      </div>
+      <div class="blog-content">
+        <div class="blog-meta">
+          <span class="blog-tag">Cores</span>
+          <span class="blog-date"><!-- data --></span>
+        </div>
+        <h3 class="blog-title"><!-- Título --></h3>
+        <span class="blog-link">Ler artigo →</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- CONTEÚDO & REDES SOCIAIS -->
+<section id="social">
+  <div class="section-header fade-up">
+    <span class="section-number">03</span>
+    <h2 class="section-title">Conteúdo & Redes Sociais</h2>
+    <span class="section-desc">Gestão de conteúdo e projetos anteriores</span>
+  </div>
+
+  <div class="social-grid">
+    <!-- Substitua cada cartão por um projeto/cliente/conta gerenciada -->
+    <div class="social-card fade-up">
+      <div class="social-platform"><!-- Plataforma / Período --></div>
+      <div class="social-title"><!-- Nome do projeto ou conta --></div>
+      <div class="social-desc"><!-- Descrição do que foi feito: tipo de conteúdo, resultados, escopo --></div>
+    </div>
+
+    <div class="social-card fade-up">
+      <div class="social-platform"><!-- Plataforma / Período --></div>
+      <div class="social-title"><!-- Nome do projeto ou conta --></div>
+      <div class="social-desc"><!-- Descrição --></div>
+    </div>
+
+    <div class="social-card fade-up">
+      <div class="social-platform"><!-- Plataforma / Período --></div>
+      <div class="social-title"><!-- Nome do projeto ou conta --></div>
+      <div class="social-desc"><!-- Descrição --></div>
+    </div>
+
+    <div class="social-card fade-up">
+      <div class="social-platform"><!-- Plataforma / Período --></div>
+      <div class="social-title"><!-- Nome do projeto ou conta --></div>
+      <div class="social-desc"><!-- Descrição --></div>
+    </div>
+
+    <div class="social-card fade-up">
+      <div class="social-platform"><!-- Plataforma / Período --></div>
+      <div class="social-title"><!-- Nome do projeto ou conta --></div>
+      <div class="social-desc"><!-- Descrição --></div>
+    </div>
+
+    <div class="social-card fade-up">
+      <div class="social-platform"><!-- Plataforma / Período --></div>
+      <div class="social-title"><!-- Nome do projeto ou conta --></div>
+      <div class="social-desc"><!-- Descrição --></div>
+    </div>
+  </div>
+</section>
+
+<!-- VÍDEOS BILÍNGUES 2025 -->
+<section id="videos">
+  <div class="section-header fade-up">
+    <span class="section-number">04</span>
+    <h2 class="section-title">Vídeos 2025</h2>
+    <span class="section-desc">Conteúdo bilíngue para agência internacional</span>
+  </div>
+
+  <div class="videos-intro fade-up">
+    <div class="videos-text-pt">
+      <span class="lang-tag">PT</span>
+      <p class="videos-paragraph">
+        <!-- Contexto em português sobre os vídeos: para qual agência, tipo de conteúdo, objetivo, plataformas. -->
+        Em 2025, produzi uma série de conteúdos em vídeo para uma agência internacional, explorando tendências de moda com olhar analítico e linguagem acessível. Os vídeos foram desenvolvidos em formato bilíngue (português e inglês), com roteiro e produção adaptados para cada mercado.
+      </p>
+    </div>
+    <div class="videos-text-en">
+      <span class="lang-tag">EN</span>
+      <p class="videos-paragraph">
+        <!-- Context in English about the videos: for which agency, content type, objective, platforms. -->
+        In 2025, I produced a series of video content for an international agency, exploring fashion trends through an analytical lens and accessible language. The videos were developed bilingually (Portuguese and English), with scripts and production adapted for each market.
+      </p>
+    </div>
+  </div>
+
+  <div class="videos-grid">
+    <!-- Repita esse bloco para cada vídeo. Coloque o link do vídeo no href do <a> -->
+    <a class="video-card fade-up" href="<!-- URL DO VÍDEO -->" target="_blank">
+      <div class="video-thumb">
+        <!-- <img src="thumb-video-1.jpg" alt="Título do vídeo"> -->
+        <div class="video-thumb-placeholder">
+          <div class="play-icon"></div>
+          <span style="font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;margin-top:0.5rem">assistir</span>
+        </div>
+      </div>
+      <div class="video-info">
+        <div class="video-brand"><!-- Marca / Agência --></div>
+        <div class="video-title"><!-- Título do vídeo --></div>
+        <div class="video-lang">PT · EN</div>
+      </div>
+    </a>
+
+    <a class="video-card fade-up" href="<!-- URL -->" target="_blank">
+      <div class="video-thumb">
+        <div class="video-thumb-placeholder">
+          <div class="play-icon"></div>
+        </div>
+      </div>
+      <div class="video-info">
+        <div class="video-brand"><!-- Marca / Agência --></div>
+        <div class="video-title"><!-- Título --></div>
+        <div class="video-lang">PT · EN</div>
+      </div>
+    </a>
+
+    <a class="video-card fade-up" href="<!-- URL -->" target="_blank">
+      <div class="video-thumb">
+        <div class="video-thumb-placeholder">
+          <div class="play-icon"></div>
+        </div>
+      </div>
+      <div class="video-info">
+        <div class="video-brand"><!-- Marca / Agência --></div>
+        <div class="video-title"><!-- Título --></div>
+        <div class="video-lang">PT · EN</div>
+      </div>
+    </a>
+
+    <a class="video-card fade-up" href="<!-- URL -->" target="_blank">
+      <div class="video-thumb">
+        <div class="video-thumb-placeholder">
+          <div class="play-icon"></div>
+        </div>
+      </div>
+      <div class="video-info">
+        <div class="video-brand"><!-- Marca / Agência --></div>
+        <div class="video-title"><!-- Título --></div>
+        <div class="video-lang">PT · EN</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- FORMAÇÃO & PROJETOS ACADÊMICOS -->
+<section id="formacao">
+  <div class="section-header fade-up">
+    <span class="section-number">05</span>
+    <h2 class="section-title">Formação & Projetos Acadêmicos</h2>
+    <span class="section-desc">Trabalhos selecionados da graduação</span>
+  </div>
+
+  <div class="formacao-grid">
+    <!-- Repita para cada projeto/disciplina que quiser destacar -->
+    <div class="formacao-card fade-up">
+      <div class="formacao-type"><!-- Tipo: TCC · Projeto de Moda · Pesquisa --></div>
+      <div class="formacao-title"><!-- Título do trabalho --></div>
+      <div class="formacao-institution"><!-- Faculdade · Ano --></div>
+      <div class="formacao-desc"><!-- Descrição breve: o que foi pesquisado, metodologia, resultado --></div>
+    </div>
+
+    <div class="formacao-card fade-up">
+      <div class="formacao-type"><!-- Tipo --></div>
+      <div class="formacao-title"><!-- Título --></div>
+      <div class="formacao-institution"><!-- Faculdade · Ano --></div>
+      <div class="formacao-desc"><!-- Descrição --></div>
+    </div>
+
+    <div class="formacao-card fade-up">
+      <div class="formacao-type"><!-- Tipo --></div>
+      <div class="formacao-title"><!-- Título --></div>
+      <div class="formacao-institution"><!-- Faculdade · Ano --></div>
+      <div class="formacao-desc"><!-- Descrição --></div>
+    </div>
+
+    <div class="formacao-card fade-up">
+      <div class="formacao-type"><!-- Tipo --></div>
+      <div class="formacao-title"><!-- Título --></div>
+      <div class="formacao-institution"><!-- Faculdade · Ano --></div>
+      <div class="formacao-desc"><!-- Descrição --></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato">
+  <p class="contato-pre">Vamos conversar</p>
+  <h2 class="contato-title">Entre em contato</h2>
+
+  <div class="contato-links">
+    <a class="contato-link" href="mailto:<!-- seu@email.com -->">
+      <span class="contato-link-label">E-mail</span>
+      <span class="contato-link-value"><!-- seu@email.com --></span>
+    </a>
+    <a class="contato-link" href="<!-- https://linkedin.com/in/... -->" target="_blank">
+      <span class="contato-link-label">LinkedIn</span>
+      <span class="contato-link-value"><!-- /in/seuperfil --></span>
+    </a>
+    <a class="contato-link" href="<!-- https://instagram.com/... -->" target="_blank">
+      <span class="contato-link-label">Instagram</span>
+      <span class="contato-link-value"><!-- @seuperfil --></span>
+    </a>
+  </div>
+
+  <div class="footer-line">
+    &copy; 2025 <!-- Seu nome completo --> — Portfólio profissional
+  </div>
+</section>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
